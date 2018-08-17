@@ -7,7 +7,19 @@ import io.netty.channel.Channel;
 public interface Message extends Serializable {
 	
 	enum MessageType{
-		BeatHeart(1),NewMessageArriave(2),ReadMessageConfirm(3),Register(4),LogOut(5);
+		//心跳
+		BeatHeart(1),
+		//转发消息
+		MessageTransfer(2),
+		//读取消息回执
+		ReadMessageConfirm(3),
+		//新消息提醒
+		NewMessageArrive(4),
+		//注册
+		Register(5),
+		//登出
+		LogOut(6);
+		
 
 		private int code;
 		MessageType(int code) {
@@ -19,23 +31,23 @@ public interface Message extends Serializable {
 		public void setCode(int code) {
 			this.code = code;
 		}
-		
+	}
+	
+	enum RedisPrefix{
+		MessageReadTimePointer,
+		MessageRepo
 		
 		
 	}
 	
-	Integer getAction();
 	
-	Long getSenderId();
+//	Integer getAction();
+//	
+//	Long getSenderId();
+//	
+//	Long getRecieverId();
+//	
+//	Long timestamp();
 	
-	Long getRecieverId();
-	
-	Long getTime();
-	
-	Object getMsgBodyContent();
-	
-	Channel channel();
-	
-	void setChannel(Channel channel);
 
 }

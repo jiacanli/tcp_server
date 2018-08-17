@@ -3,20 +3,21 @@ package com.alpha.message.decoder;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alpha.message.model.BaseMessage;
-import com.alpha.message.model.Message;
+import com.alpha.message.model.ClientTcpMessage;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
+import io.netty.channel.ChannelHandler.Sharable;
+
 
 @Component
+@Sharable
 public class TcpMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
 	
 	@Override
@@ -26,7 +27,7 @@ public class TcpMessageDecoder extends MessageToMessageDecoder<ByteBuf> {
 		String message_str = msg.toString(Charset.forName("UTF-8"));
 		try {
 			
-			Message message = JSONObject.parseObject(message_str, BaseMessage.class);
+			ClientTcpMessage message = JSONObject.parseObject(message_str, ClientTcpMessage.class);
 			message.setChannel(ctx.channel());
 			out.add(message);
 		}catch (Exception e) {

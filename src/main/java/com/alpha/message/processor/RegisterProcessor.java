@@ -1,12 +1,17 @@
 package com.alpha.message.processor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import com.alpha.message.model.ClientTcpMessage;
 import com.alpha.message.model.Message;
 import com.alpha.server.TcpServer;
 
 @Component
-public class RegisterProcessor implements MessageProcessor {
+public class RegisterProcessor extends BaseProcessor  implements MessageProcessor {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(RegisterProcessor.class);
 	
 	 public RegisterProcessor() {
 		// TODO Auto-generated constructor stub
@@ -21,9 +26,9 @@ public class RegisterProcessor implements MessageProcessor {
 	  * 
 	  */ 
 	@Override
-	public boolean process(Message msg) {
+	public boolean process(ClientTcpMessage msg) {
 		// TODO Auto-generated method stub
-		TcpServer.Client.put(msg.getSenderId(),msg.channel());
+		addClient(msg.getSender(),msg.getChannel());
 		return true;
 	}
 

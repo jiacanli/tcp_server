@@ -3,24 +3,37 @@ package com.alpha.server;
 import java.net.InetSocketAddress;
 import java.util.Date;
 
-import com.alpha.message.model.Message;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import com.alpha.message.model.ClientTcpMessage;
+import com.alpha.message.model.Message;
+import com.alpha.message.processor.MessageProcessor;
+import com.alpha.message.processor.ProcessPipeline;
+
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-public class TcpServerHandler extends SimpleChannelInboundHandler<Message> {
-
+@Component
+@Sharable
+public class TcpServerHandler extends SimpleChannelInboundHandler<ClientTcpMessage> {
+	
+	@Autowired
+	private ProcessPipeline processPipeline;
+	
+	
+	
+	
 	@Override
-	protected void channelRead0(ChannelHandlerContext ctx, Message msg) throws Exception {
+	protected void channelRead0(ChannelHandlerContext ctx, ClientTcpMessage msg) throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("recieve msg: "+ msg.getMsgBodyContent());
-	}
-	
-	
-	
-
-	@Override
-	public void channelRead(ChannelHandlerContext arg0, Object arg1) throws Exception{
+		System.out.println("message recieve" + msg.getSender());
+		MessageProcessor processor = processPipeline.getAvailablePorcessor(msg.getAction());
+		if(processor!=null) {
+			processor.process(msg);
+		}
 		
 	}
 	
