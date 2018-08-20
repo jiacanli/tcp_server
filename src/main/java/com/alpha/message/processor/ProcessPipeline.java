@@ -44,6 +44,9 @@ public class ProcessPipeline {
 	}
 	
 	public MessageProcessor getAvailablePorcessor(Integer type) {
+		if(type == null) {
+			return null;
+		}
 		return processor.get(type);
 	}
 	

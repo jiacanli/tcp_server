@@ -20,8 +20,8 @@ public class MessageTransferProcessor extends BaseProcessor implements MessagePr
 		// TODO Auto-generated method stub
 		//接受消息者未下线
 		if(isCientOnline(msg.getReciever())) {
-			LOG.info("recieve is online");
-			Long timepointer = (Long) valueOps.get(msg.getReciever()+"-"+Message.RedisPrefix.MessageReadTimePointer.name());
+			LOG.info(String.format("recieve [%s] is online", msg.getReciever()));
+			Number timepointer = (Number) valueOps.get(msg.getReciever()+"-"+Message.RedisPrefix.MessageReadTimePointer.name());
 			//首次读取消息 初始化
 			if(timepointer == null) {
 				timepointer = 0l;
@@ -30,7 +30,7 @@ public class MessageTransferProcessor extends BaseProcessor implements MessagePr
 			Channel channel = getClientChannelByKey(msg.getReciever());
 			DefaultMessage message = DefaultMessage.newMessage();
 			message.action = Message.MessageType.NewMessageArrive.getCode();
-			message.timepointer = timepointer;
+			message.timepointer = timepointer.longValue();
 			try {
 				ChannelWrite(message.toJSONString(), channel);
 			} catch (Exception e) {

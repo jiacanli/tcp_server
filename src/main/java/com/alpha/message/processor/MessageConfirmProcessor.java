@@ -12,7 +12,7 @@ public class MessageConfirmProcessor extends BaseProcessor implements MessagePro
 		// TODO Auto-generated method stub
 		Long id = msg.getSender();
 		//更新最后读取时间
-		valueOps.set(id+"-"+Message.RedisPrefix.MessageReadTimePointer.name(), msg.timepointer);
+		valueOps.set(id+"-"+Message.RedisPrefix.MessageReadTimePointer.name(), msg.timepointer+1);
 		return true;
 	}
 	

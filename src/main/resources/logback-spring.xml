@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration  scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>logback</contextName>
+    <!--控制台输出的格式设置 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- 控制台输出的日志 的格式 -->
+        <encoder>
+            <pattern>
+                [ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96} [%line] - %msg%n
+            </pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 只是DEBUG级别以上的日志才显示 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <!--文件输出的格式设置 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <!-- 日志日常打印文件 -->
+        <file>logs/tcp_server.log</file>
+        <!-- 配置日志所生成的目录以及生成文件名的规则 在logs/cbmall-2017-06-31.0.log.zip -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/cbmall-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- 如果按天来回滚，则最大保存时间为90天，90天之前的都将被清理掉 -->
+            <maxHistory>90</maxHistory>
+            <!-- 日志总保存量为10GB -->
+            <totalSizeCap>10GB</totalSizeCap>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!--文件达到 最大64MB时会被压缩和切割 -->
+                <maxFileSize>64 MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>

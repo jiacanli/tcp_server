@@ -2,6 +2,7 @@ package com.alpha.server;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import javax.sound.sampled.Port;
 
@@ -27,6 +28,7 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.timeout.IdleStateHandler;
 
 @Component
 public class TcpServer {
@@ -50,6 +52,10 @@ public class TcpServer {
     
     @Value("${netty.port}")
     private int Port;
+    @Value("${netty.read.timeout}")
+    private int readTimeOut;
+    @Value("${netty.write.timeout}")
+    private int writeTimeOut;
     
     @Autowired
     private TcpMessageDecoder decoder;
@@ -70,8 +76,8 @@ public class TcpServer {
 //                pipeline.addLast("frameEncoder", new LengthFieldPrepender(4));
 //                pipeline.addLast("decoder", new StringDecoder(CharsetUtil.UTF_8));  
 //                pipeline.addLast("encoder", new StringEncoder(CharsetUtil.UTF_8));
+                pipeline.addLast(new IdleStateHandler(readTimeOut, writeTimeOut, 60, TimeUnit.SECONDS));
                 pipeline.addLast(new LineBasedFrameDecoder(1024));
-//                pipeline.addLast(new StringDecoder());
                 pipeline.addLast(decoder);
                 pipeline.addLast(handler);
                   

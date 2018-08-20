@@ -7,7 +7,18 @@ public class RequestMessage extends DefaultMessage {
 	private static final long serialVersionUID = 1L;
 	
 	public String message;
+	public Integer type;
 	
+
+	public Integer getType() {
+		return type;
+	}
+
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 
 	public String getMessage() {
 		return message;

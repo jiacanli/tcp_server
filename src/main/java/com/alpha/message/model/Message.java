@@ -5,8 +5,9 @@ import java.io.Serializable;
 import io.netty.channel.Channel;
 
 public interface Message extends Serializable {
-	
+	// tcp消息类型
 	enum MessageType{
+		//---------需和客户端保持一致-------
 		//心跳
 		BeatHeart(1),
 		//转发消息

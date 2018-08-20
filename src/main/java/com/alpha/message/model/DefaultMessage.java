@@ -9,7 +9,7 @@ public class DefaultMessage implements Message {
 	 * 
 	 */
 	private static final long serialVersionUID = 8640875193276501979L;
-	public transient Integer action;
+	public Integer action;
 	public Long sender;
 	public Long reciever;
 	public Long timepointer;
